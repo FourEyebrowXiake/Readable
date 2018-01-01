@@ -13,10 +13,9 @@ class PostList extends Component {
     render() {
         const { posts } = this.props;
         const listData = [];
-
-        posts.map((item) => {
+        posts.forEach((item) => {
             listData.push({
-                href: 'http://ant.design',
+                href: `/posts/${item.id}`,
                 title: item.title,
                 avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                 description: `${item.author} - ${new Date(item.timestamp).toDateString()} - ${item.category}`,
@@ -26,14 +25,14 @@ class PostList extends Component {
             });
         })
 
-        const pagination = {
-            pageSize: 1,
-            current: 1,
-            total: listData.length,
-            onChange: (() => { 
-                console.log('pagination.onChange')
-            }),
-        };
+        // const pagination = {
+        //     pageSize: 2,
+        //     current: 1,
+        //     total: listData.length,
+        //     onChange: ((e) => { 
+                
+        //     }),
+        // };
 
         const IconText = ({ type, text }) => (
             <span>
@@ -46,7 +45,7 @@ class PostList extends Component {
             <List
                 itemLayout="vertical"
                 size="large"
-                pagination={pagination}
+                pagination={false}
                 dataSource={listData}
                 renderItem={item => (
                     <List.Item
