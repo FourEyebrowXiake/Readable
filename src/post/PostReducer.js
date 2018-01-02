@@ -2,8 +2,16 @@ import {
     RECEIVE_POSTS, REQUEST_POSTS,
     ORDER_POSTS,CREATING_POST,CREATED_POST,
     RECIEVE_POST,REQUEST_POST,
-    RECIEVE_VOTE,REQUEST_VOTE
+    RECIEVE_VOTE,REQUEST_VOTE,
+    RECIEVE_EDIT,REQUEST_EDIT,
+    REQUEST_DELETE,RECEIVE_DELETE
 } from './PostAction';
+import {
+    filterItems,
+    order,
+    select,
+    deleteItems
+} from '../tool/Tool'
 
 
 export function posts(state = {
@@ -15,6 +23,8 @@ export function posts(state = {
         case REQUEST_POST:
         case REQUEST_VOTE:
         case CREATING_POST:
+        case REQUEST_EDIT:
+        case REQUEST_DELETE:
             return Object.assign({}, state, {
                 isFetching: true,
             })
@@ -38,47 +48,21 @@ export function posts(state = {
                 items: state.items.concat(action.post),
             })
         case RECIEVE_VOTE:
-            console.log('RECIEVE_VOTE', action.post)
             return Object.assign({}, state, {
                 isFetching: false,
                 items: [action.post],
             })
+        case RECIEVE_EDIT:
+            return Object.assign({}, state, {
+                isFetching: false,
+                items: filterItems(state.items, action.post),
+            })
+        case RECEIVE_DELETE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                items: deleteItems(state.items, action.post),
+            })
         default:
             return state
     }
-}
-
-function order(items, fun) {
-    return items.slice().sort(fun)
-}
-
-function select(kind) {
-    switch(kind) {
-        case 'vote':
-            return byVote;
-        case 'time':
-            return byTime;
-        default:
-            return byVote;
-    }
-}
-
-const byVote = (a, b) => {
-    if (a.voteScore > b.voteScore) {
-        return -1;
-    }
-    if (a.voteScore < b.voteScore) {
-        return 1;
-    }
-    return 0;
-}
-
-const byTime = (a, b) => {
-    if (a.timestamp > b.timestamp) {
-        return -1;
-    }
-    if (a.timestamp < b.timestamp) {
-        return 1;
-    }
-    return 0;
 }

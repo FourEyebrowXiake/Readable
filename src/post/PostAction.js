@@ -17,6 +17,9 @@ export const RECIEVE_VOTE = 'RECIEVE_VOTE'
 export const REQUEST_EDIT = 'REQUEST_EDIT'
 export const RECIEVE_EDIT = 'RECIEVE_EDIT'
 
+export const REQUEST_DELETE = 'REQUEST_DELETE'
+export const RECEIVE_DELETE = 'RECEIVE_DELETE'
+
 
 function requestPosts(category) {
     return {

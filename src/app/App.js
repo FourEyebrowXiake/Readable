@@ -12,31 +12,33 @@ class App extends Component {
     const { Header, Content, Footer } = Layout;
 
     return (
-      <Layout className="layout">
-        <Header>
-          <div className="logo" />
-          <PostCreate />
-        </Header>
-
-        <Route exact path="/" render={() => (
-          <Layout>
-            <Category />
-              <Content style={{ padding: '16px 50px' }}>
-                <PostList />
-              </Content>
-          </Layout>
-        )} >
-        </Route>
-
-          <Route  path="/posts/:id?" render={() => (
-            <Post />
-          )}>   
-          </Route>
+        <Layout>
+          <Header>
+            <div className="logo" />
+            <PostCreate />
+          </Header> 
           
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2016 Created by Ant UED
-        </Footer>
-      </Layout>
+          <Route exact path="/:category?" render={() => (
+            <Content style={{ padding: '16px 50px' }}>
+              <Layout style={{ padding: '24px 0', background: '#fff' }}>
+                <Category />
+                <Content style={{ padding: '0 24px', minHeight: '100%' }}>
+                  <PostList />
+                </Content>
+              </Layout>
+            </Content>
+          )} >
+          </Route>
+
+            <Route  path="/posts/:id" render={() => (
+              <Post />
+            )}>   
+            </Route>
+            
+          <Footer style={{ textAlign: 'center' }}>
+            Ant Design ©2016 Created by Ant UED
+          </Footer>
+        </Layout>
     );
   }
 }

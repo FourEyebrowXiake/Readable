@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Card, Tag, Divider, Icon, Button } from 'antd';
-import { fetchPostById, requestPostDetail,REQUEST_VOTE,RECIEVE_VOTE } from './PostAction'
-
+import { Card, Tag, Divider, Icon, Button, Layout, Menu } from 'antd';
+import { fetchPostById, requestPostDetail,REQUEST_VOTE,RECIEVE_VOTE } from './PostAction';
+import  CommentList  from '../comment/CommentList'
 
 
 class Post extends Component {
@@ -18,14 +18,12 @@ class Post extends Component {
         const obj = {
             option: arguments[0]
         }
-        console.log(obj)
         getPostDetail(obj, postId, 'POST', REQUEST_VOTE, RECIEVE_VOTE)
     }
 
-
-
     render() {
-        const { post } = this.props
+        const { post } = this.props;
+        const { Content } = Layout;
 
         const IconText = ({ type, action }) => (
             <Button icon={type} 
@@ -37,32 +35,38 @@ class Post extends Component {
         return (
             <div>
                 {post ? (
-                    <Card loading={false} title={post.title}
-                        style={
-                            {
-                                width: '80%',
-                                margin: '0 auto',
-                            }
-                        }
-                        actions={[<IconText type="like-o" action="upVote"  />,
-                            <IconText type="dislike-o" action="downVote" />]}
-                    >
-                        <Tag color="blue">
-                            {post.category}
-                        </Tag>
-                        <Card style={{ width: '100%', marginTop: '16px' }}>
-                            <h1>{post.author}</h1>
-                            <p>{post.body}</p>
-                        </Card>
-                        <p
-                            style={{
-                                padding: "16px 0px 0px 0px"
-                            }}
-                        >
-                            {`${new Date(post.timestamp).toDateString()} - 有${post.voteScore}人点赞`}
-                        </p>
-                        
-                    </Card>
+                    <Layout>
+                        <Content style={{ padding: '16px 50px' }} >
+                            <Card loading={false} title={post.title}
+                                actions={[<IconText type="like-o" action="upVote"  />,
+                                    <IconText type="dislike-o" action="downVote" />]}
+                            >
+                                <Tag color="blue">
+                                    {post.category}
+                                </Tag>
+                                <Card style={{ width: '100%', marginTop: '16px' }}>
+                                    <h1>{post.author}</h1>
+                                    <p>{post.body}</p>
+                                </Card>
+                                <p
+                                    style={{
+                                        padding: "16px 0px 0px 0px"
+                                    }}
+                                >
+                                    {`${new Date(post.timestamp).toDateString()} - 有 ` }
+                                        <strong style={{
+                                            fontWeight: 'bold',
+                                            fontSize: '20px'
+                                        }} >
+                                            {post.voteScore}
+                                        </strong>
+                                    { ' 人点赞'}
+                                </p> 
+                            </Card>
+                        </Content>
+                        <CommentList />
+
+                    </Layout>
                 ) : (<Card loading title="title"
                         style={
                             {

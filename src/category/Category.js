@@ -39,7 +39,10 @@ class Category extends Component {
         const { categories } = this.props
 
         return (
-            <Sider width={200} style={{ background: '#fff' }}>
+            <Sider width={200} 
+                style={{ 
+                background: '#fff',
+                }}>
                 <Menu
                     onClick={this.handleClick}
                     mode="inline"
@@ -50,7 +53,7 @@ class Category extends Component {
                     <Menu.Item key="all">
                         {"All Post"}
                     </Menu.Item>
-                    <SubMenu key="sub1" title={<span><Icon type="tags-o" />类别</span>}>
+                    <SubMenu key="sub1" title={<span><Icon type="tags-o" />Category</span>}>
                         {
                             categories.map((item) => (   
                                 <Menu.Item key={item.path} >
@@ -77,6 +80,7 @@ class Category extends Component {
         );
     }
 }
+
 
 
 const mapStateToProps = (state, ownProps) => {

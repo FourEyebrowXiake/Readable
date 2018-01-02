@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import { Modal, Button, Form, Input  } from 'antd';
-import { createPost } from './PostAction';
+import { Modal, Button, Form, Input } from 'antd';
+import { fetchComment } from './CommentAction';
 import { connect } from 'react-redux';
+import { REQUEST_COMMENT_CREAT, RECEIVE_COMMNET_CREAT } from './CommentAction'
+import { guid } from '../tool/Tool'
 
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-class PostCreate extends Component {
+class CommentCreate extends Component {
     state = {
         visible: false,
         confirmLoading: false,
         fields: {
-            title: {
-                value: '',
-            },
             body: {
                 value: '',
             },
             author: {
-                value: '',
-            },
-            category: {
                 value: '',
             },
         },
@@ -44,8 +40,9 @@ class PostCreate extends Component {
         })
         obj['timestamp'] = Date.now()
         obj['id'] = guid()
+        obj['parentId'] = this.props.parentId
 
-        this.props.createPost(obj)
+        this.props.createComment(obj, null, 'POST', REQUEST_COMMENT_CREAT, RECEIVE_COMMNET_CREAT)
     }
     handleCancel = () => {
         this.setState({
@@ -62,7 +59,7 @@ class PostCreate extends Component {
         const fields = this.state.fields;
         return (
             <div>
-                <Button type="primary" icon="plus" onClick={this.showModal} >Create Post</Button>
+                <Button type="primary" icon="plus" onClick={this.showModal} >create</Button>
                 <Modal title="开始你的创作"
                     visible={visible}
                     onOk={this.handleOk}
@@ -72,7 +69,7 @@ class PostCreate extends Component {
                     <div>
                         <CustomizedForm {...fields} onChange={this.handleFormChange} />
                     </div>
-                    
+
                 </Modal>
             </div>
         );
@@ -86,10 +83,6 @@ const CustomizedForm = Form.create({
     },
     mapPropsToFields(props) {
         return {
-            title: Form.createFormField({
-                ...props.title,
-                value: props.title.value,
-            }),
             body: Form.createFormField({
                 ...props.body,
                 value: props.body.value,
@@ -98,63 +91,40 @@ const CustomizedForm = Form.create({
                 ...props.author,
                 value: props.author.value,
             }),
-            category: Form.createFormField({
-                ...props.category,
-                value: props.category.value,
-            }),
         };
     },
     onValuesChange(_, values) {
-        
+
     },
 })((props) => {
     const { getFieldDecorator } = props.form;
     return (
         <Form layout="vertical">
             <FormItem >
-                {getFieldDecorator('title', {
-                    rules: [{ required: true, message: 'title is required!' }],
-                })(<TextArea placeholder="post title" autosize={{ minRows: 1, maxRows: 6 }} />)}
-            </FormItem>
-            <FormItem >
                 {getFieldDecorator('body', {
                     rules: [{ required: true, message: 'body is required!' }],
-                })(<TextArea placeholder="post content" autosize={{ minRows: 2, maxRows: 6 }} />)}
+                })(<TextArea placeholder="comment content" autosize={{ minRows: 2, maxRows: 6 }} />)}
             </FormItem>
             <FormItem >
                 {getFieldDecorator('author', {
                     rules: [{ required: true, message: 'author is required!' }],
-                })(<Input placeholder="post author" />)}
-            </FormItem>
-            <FormItem >
-                {getFieldDecorator('category', {
-                    rules: [{ required: true, message: 'category is required!' }],
-                })(<Input placeholder="post category" />)}
+                })(<Input placeholder="comment author" />)}
             </FormItem>
         </Form>
     );
 });
 
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
-}
 
 
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        createPost: (obj) => {
-            dispatch(createPost(obj))
-        }
+        createComment: (obj, id, method, request, receive) => {
+            dispatch(fetchComment(obj, id, method, request, receive))
+        },
     }
 }
 
 
-export default connect(null, mapDispatchToProps)(PostCreate)
+export default connect(null, mapDispatchToProps)(CommentCreate)
 

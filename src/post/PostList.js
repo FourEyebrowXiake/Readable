@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { List, Avatar, Icon } from 'antd';
-import { fetchPosts } from './PostAction';
+import { List, Avatar, Icon, Button } from 'antd';
+import {
+    fetchPosts,
+    requestPostDetail,
+    RECEIVE_DELETE,
+    REQUEST_DELETE
+} from './PostAction';
 import { connect } from 'react-redux';
+import PostEdit from './PostEdit';
 
 class PostList extends Component {
 
@@ -10,12 +16,18 @@ class PostList extends Component {
        getPosts();
     }
 
+    handleChange() {
+        const { deletePost } = this.props;
+        deletePost({}, arguments[0], arguments[1], REQUEST_DELETE, RECEIVE_DELETE)
+    }
+
     render() {
         const { posts } = this.props;
         const listData = [];
         posts.forEach((item) => {
             listData.push({
                 href: `/posts/${item.id}`,
+                id: item.id,
                 title: item.title,
                 avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                 description: `${item.author} - ${new Date(item.timestamp).toDateString()} - ${item.category}`,
@@ -25,21 +37,20 @@ class PostList extends Component {
             });
         })
 
-        // const pagination = {
-        //     pageSize: 2,
-        //     current: 1,
-        //     total: listData.length,
-        //     onChange: ((e) => { 
-                
-        //     }),
-        // };
-
         const IconText = ({ type, text }) => (
             <span>
                 <Icon type={type} style={{ marginRight: 8 }} />
                 {text}
             </span>
         );
+
+        const Delete = ({ type = null, action, cId, method }) => (
+            <Button icon={type}
+                onClick={this.handleChange.bind(this, cId, method)}
+                type="danger" >
+            </Button>
+        );
+
         
         return (
             <List
@@ -50,8 +61,12 @@ class PostList extends Component {
                 renderItem={item => (
                     <List.Item
                         key={item.title}
-                        actions={[<IconText type="like-o" text={item.voteScore} />, 
-                        <IconText type="message" text={item.commentCount} />]}
+                        actions={[
+                        <IconText type="like-o" text={item.voteScore} />, 
+                        <IconText type="message" text={item.commentCount} />,
+                        <PostEdit id={item.id} />,
+                        <Delete type="delete" cId={item.id} method="DELETE" />
+                    ]}
                     >
                         <List.Item.Meta
                             avatar={<Avatar src={item.avatar} />}
@@ -70,7 +85,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         getPosts: () => {
             dispatch(fetchPosts())
-        }
+        },
+        deletePost: (obj, id, method, request, receive) => {
+            dispatch(requestPostDetail(obj, id, method, request, receive))
+        },
     }
 }
 
