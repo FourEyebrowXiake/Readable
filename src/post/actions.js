@@ -1,36 +1,18 @@
 import fetch from 'isomorphic-fetch'
 
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-
-export const ORDER_POSTS = 'ORDER_POSTS'
-
-export const CREATING_POST = 'CREATING_POST'
-export const CREATED_POST = 'CREATED_POST'
-
-export const REQUEST_POST = 'REQUEST_POST'
-export const RECIEVE_POST = 'RECIEVE_POST'
-
-export const REQUEST_VOTE = 'REQUEST_VOTE'
-export const RECIEVE_VOTE = 'RECIEVE_VOTE'
-
-export const REQUEST_EDIT = 'REQUEST_EDIT'
-export const RECIEVE_EDIT = 'RECIEVE_EDIT'
-
-export const REQUEST_DELETE = 'REQUEST_DELETE'
-export const RECEIVE_DELETE = 'RECEIVE_DELETE'
+import * as actionTypes from './actionTypes'
 
 
 function requestPosts(category) {
     return {
-        type: REQUEST_POSTS,
+        type: actionTypes.REQUEST_POSTS,
         category
     }
 }
 
 function receivePosts(category, json) {
     return {
-        type: RECEIVE_POSTS,
+        type: actionTypes.RECEIVE_POSTS,
         posts: json,
         category
     }
@@ -59,13 +41,13 @@ export function fetchPosts(category = null) {
 
 function requestCreate() {
     return {
-        type: CREATING_POST
+        type: actionTypes.CREATING_POST
     }
 }
 
 function receiveCreate(json) {
     return {
-        type: CREATED_POST,
+        type: actionTypes.CREATED_POST,
         post: json
     }
 }
@@ -89,13 +71,13 @@ export function createPost(obj) {
 
 function requestPost() {
     return {
-        type: REQUEST_POST
+        type: actionTypes.REQUEST_POST
     }
 }
 
 function receivePost(json) {
     return {
-        type: RECIEVE_POST,
+        type: actionTypes.RECIEVE_POST,
         post: json
     }
 }
@@ -129,9 +111,9 @@ function receive(action, json) {
 }
 
 
-export function requestPostDetail(obj, id, method,req,rec) {
+export function requestPostDetail(obj, id, method,reqAction,recAction) {
     return (dispatch, getState) => {
-        dispatch(request(req))
+        dispatch(request(reqAction))
         return fetch(`http://localhost:3001/posts/${id}`, {
             method: method,
             headers: {
@@ -142,14 +124,14 @@ export function requestPostDetail(obj, id, method,req,rec) {
             body: JSON.stringify(obj)
         })
             .then(response => response.json())
-            .then(json => dispatch(receive(rec, json)))
+            .then(json => dispatch(receive(recAction, json)))
     }
 }
 
 
 export function order(kind) {
     return {
-        type: ORDER_POSTS,
+        type: actionTypes.ORDER_POSTS,
         kind
     }
 }

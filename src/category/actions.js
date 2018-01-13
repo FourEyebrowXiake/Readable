@@ -1,7 +1,5 @@
 import fetch from 'isomorphic-fetch'
-
-export const REQUEST_CATEGORY = 'REQUEST_CATEGORY'
-export const RECEIVE_CATEGORY = 'RECEIVE_CATEGORY'
+import { REQUEST_CATEGORY,RECEIVE_CATEGORY } from './actionTypes'
 
 
 function requestCATEGORY() {
@@ -17,10 +15,10 @@ function receiveCATEGORY(json) {
     }
 }
 
-export function fetchCategory() {
+export function fetchCategory(category = 'categories') {
     return (dispatch, getState) => {
         dispatch(requestCATEGORY())
-        return fetch('http://localhost:3001/categories', {
+        return fetch(`http://localhost:3001/${category}`, {
             method: 'GET',
             headers: {
                 "Authorization": "whatever-you-want"

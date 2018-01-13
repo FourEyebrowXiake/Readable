@@ -3,12 +3,12 @@ import { Modal, Button, Form, Input } from 'antd';
 import {
     REQUESt_COMMENT_EDIT,
     RECEIVE_COMMNET_EDIT,
-    fetchComment,
-    RECEIVE_COMMENT_VOTE
- } from './CommentAction';
+ } from '../actionTypes';
+ import {
+    fetchComment
+ } from '../actions'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { guid } from '../tool/Tool'
 
 
 const FormItem = Form.Item;
@@ -20,7 +20,7 @@ class EditComment extends Component {
         confirmLoading: false,
         fields: {
             body: {
-                value: '',
+                value: this.props.content,
             },
         },
     }
@@ -42,7 +42,7 @@ class EditComment extends Component {
         })
         obj['timestamp'] = Date.now()
 
-        this.props.editComment(obj, this.props.id, 'PUT', REQUESt_COMMENT_EDIT, RECEIVE_COMMNET_EDIT)
+        this.props.fetchComment(obj, this.props.id, 'PUT', REQUESt_COMMENT_EDIT, RECEIVE_COMMNET_EDIT)
     }
     handleCancel = () => {
         this.setState({
@@ -60,7 +60,7 @@ class EditComment extends Component {
         return (
             <div>
                 <Button type="primary" icon="edit" onClick={this.showModal} ></Button>
-                <Modal title="编辑留言"
+                <Modal title="Edit comment"
                     visible={visible}
                     onOk={this.handleOk}
                     confirmLoading={confirmLoading}
@@ -96,7 +96,7 @@ const CustomizedForm = Form.create({
     const { getFieldDecorator } = props.form;
     return (
         <Form layout="vertical">
-            <FormItem >
+            <FormItem label="Content">
                 {getFieldDecorator('body', {
                     rules: [{ required: true, message: 'body is required!' }],
                 })(<TextArea placeholder="post content" autosize={{ minRows: 2, maxRows: 6 }} />)}
@@ -106,15 +106,5 @@ const CustomizedForm = Form.create({
 });
 
 
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        editComment: (obj, id, method, request, receive) => {
-            dispatch(fetchComment(obj, id, method, request, receive))
-        }
-    }
-}
-
-
-export default withRouter(connect(null, mapDispatchToProps)(EditComment))
+export default withRouter(connect(null, { fetchComment })(EditComment))
 

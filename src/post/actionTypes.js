@@ -1,0 +1,19 @@
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+
+export const ORDER_POSTS = 'ORDER_POSTS'
+
+export const CREATING_POST = 'CREATING_POST'
+export const CREATED_POST = 'CREATED_POST'
+
+export const REQUEST_POST = 'REQUEST_POST'
+export const RECIEVE_POST = 'RECIEVE_POST'
+
+export const REQUEST_VOTE = 'REQUEST_VOTE'
+export const RECIEVE_VOTE = 'RECIEVE_VOTE'
+
+export const REQUEST_EDIT = 'REQUEST_EDIT'
+export const RECIEVE_EDIT = 'RECIEVE_EDIT'
+
+export const REQUEST_DELETE = 'REQUEST_DELETE'
+export const RECEIVE_DELETE = 'RECEIVE_DELETE'

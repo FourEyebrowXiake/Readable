@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import { List, Button, Menu, Dropdown, Layout, Row, Col  } from 'antd';
 import { withRouter } from 'react-router-dom';
 import {
-    fetchComments,
-    fetchComment,
     RECEIVE_COMMENT_VOTE,
     REQUEST_COMMENT_VOTE,
     RECEIVE_COMMENT_DELETE,
-    REQUEST_COMMENT_DELETE,
+    REQUEST_COMMENT_DELETE
+} from '../actionTypes';
+import {
+    fetchComments,
+    fetchComment,
     order
-} from './CommentAction';
+} from '../actions'
 import EditComment from './CommentEdit'
 import { Link } from 'react-router-dom'
 import CreateComment  from './CommentCreat'
@@ -18,21 +20,22 @@ import CreateComment  from './CommentCreat'
 class CommentList extends Component {
 
     componentDidMount() {
-        const { getComments, postId } = this.props;
-        getComments(postId);
+        const { fetchComments, postId } = this.props;
+        fetchComments(postId);
     }
 
     handleChange() {
-        const {  reqComment } = this.props;
+        const { fetchComment } = this.props;
         const obj = {
             option: arguments[0]
         }
         switch(arguments[2]){
             case 'POST':
-                reqComment(obj, arguments[1], arguments[2], REQUEST_COMMENT_VOTE, RECEIVE_COMMENT_VOTE)
+                fetchComment(obj, arguments[1], arguments[2], REQUEST_COMMENT_VOTE, RECEIVE_COMMENT_VOTE)
                 break;
             case 'DELETE':
-                reqComment({}, arguments[1], arguments[2], REQUEST_COMMENT_DELETE, RECEIVE_COMMENT_DELETE)
+                fetchComment({}, arguments[1], arguments[2], REQUEST_COMMENT_DELETE, RECEIVE_COMMENT_DELETE)
+                break;
             default:
                 console.log('CommentList ERROR')
         }
@@ -110,7 +113,7 @@ class CommentList extends Component {
                             actions={
                                 [<IconText type="like-o" cId={item.id} action="upVote" method="POST" /> ,
                                 <IconText type="dislike-o" cId={item.id} action="downVote" method="POST" />,
-                                <EditComment id={item.id} />,
+                                <EditComment content={item.content} id={item.id} />,
                                 <IconText type="delete" cId={item.id} method="DELETE"/>
                             ]}
                         >
@@ -134,21 +137,8 @@ const mapStateToProps = (state, ownProps) => {
         comments: state.comments.items
     }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        getComments: (id) => {
-            dispatch(fetchComments(id))
-        },
-        reqComment: (obj, id, method, request, receive) => {
-            dispatch(fetchComment(obj, id, method, request, receive))
-        },
-        order: (kind) => {
-            dispatch(order(kind))
-        }
-    }
-}
 
 export default withRouter(connect(
     mapStateToProps,
-    mapDispatchToProps
+    { fetchComments, fetchComment, order }
 )(CommentList));

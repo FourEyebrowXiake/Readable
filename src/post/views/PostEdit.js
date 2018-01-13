@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
-import { Modal, Button, Form, Input  } from 'antd';
-import { createPost } from './PostAction';
+import { Modal, Button, Form, Input } from 'antd';
+import {
+    requestPostDetail,
+} from '../actions';
+import {
+    REQUEST_EDIT,
+    RECIEVE_EDIT
+} from '../actionTypes'
 import { connect } from 'react-redux';
 
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-class PostCreate extends Component {
+class PostEdit extends Component {
     state = {
         visible: false,
         confirmLoading: false,
         fields: {
             title: {
-                value: '',
+                value: this.props.title,
             },
             body: {
-                value: '',
-            },
-            author: {
-                value: '',
-            },
-            category: {
-                value: '',
+                value: this.props.content,
             },
         },
     }
@@ -42,10 +42,7 @@ class PostCreate extends Component {
         Object.keys(this.state.fields).forEach((item) => {
             obj[item] = this.state.fields[item].value;
         })
-        obj['timestamp'] = Date.now()
-        obj['id'] = guid()
-
-        this.props.createPost(obj)
+        this.props.requestPostDetail(obj, this.props.id, 'PUT', REQUEST_EDIT, RECIEVE_EDIT)
     }
     handleCancel = () => {
         this.setState({
@@ -62,8 +59,8 @@ class PostCreate extends Component {
         const fields = this.state.fields;
         return (
             <div>
-                <Button type="primary" icon="plus" onClick={this.showModal} >Create Post</Button>
-                <Modal title="开始你的创作"
+                <Button type="primary" icon="edit" onClick={this.showModal} ></Button>
+                <Modal title="edit post"
                     visible={visible}
                     onOk={this.handleOk}
                     confirmLoading={confirmLoading}
@@ -72,7 +69,7 @@ class PostCreate extends Component {
                     <div>
                         <CustomizedForm {...fields} onChange={this.handleFormChange} />
                     </div>
-                    
+
                 </Modal>
             </div>
         );
@@ -94,67 +91,30 @@ const CustomizedForm = Form.create({
                 ...props.body,
                 value: props.body.value,
             }),
-            author: Form.createFormField({
-                ...props.author,
-                value: props.author.value,
-            }),
-            category: Form.createFormField({
-                ...props.category,
-                value: props.category.value,
-            }),
         };
     },
     onValuesChange(_, values) {
-        
+
     },
 })((props) => {
     const { getFieldDecorator } = props.form;
     return (
         <Form layout="vertical">
-            <FormItem >
+            <FormItem label="title">
                 {getFieldDecorator('title', {
                     rules: [{ required: true, message: 'title is required!' }],
                 })(<TextArea placeholder="post title" autosize={{ minRows: 1, maxRows: 6 }} />)}
             </FormItem>
-            <FormItem >
+            <FormItem label="Content">
                 {getFieldDecorator('body', {
                     rules: [{ required: true, message: 'body is required!' }],
                 })(<TextArea placeholder="post content" autosize={{ minRows: 2, maxRows: 6 }} />)}
-            </FormItem>
-            <FormItem >
-                {getFieldDecorator('author', {
-                    rules: [{ required: true, message: 'author is required!' }],
-                })(<Input placeholder="post author" />)}
-            </FormItem>
-            <FormItem >
-                {getFieldDecorator('category', {
-                    rules: [{ required: true, message: 'category is required!' }],
-                })(<Input placeholder="post category" />)}
             </FormItem>
         </Form>
     );
 });
 
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
-}
 
 
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        createPost: (obj) => {
-            dispatch(createPost(obj))
-        }
-    }
-}
-
-
-export default connect(null, mapDispatchToProps)(PostCreate)
+export default connect(null, { requestPostDetail })(PostEdit)
 

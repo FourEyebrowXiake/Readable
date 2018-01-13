@@ -8,7 +8,7 @@ export function filterItems(items, c) {
 }
 
 export function deleteItems(items, c) {
-    return items.filter((item) => item.id != c.id)
+    return items.filter((item) => item.id !== c.id)
 }
 
 export function order(items, fun) {
@@ -55,3 +55,10 @@ export function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
+
+export function isEmpty(obj) {
+    for (var name in obj) {
+        return false;
+    }
+    return true;
+};

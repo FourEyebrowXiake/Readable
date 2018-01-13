@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Menu, Icon } from 'antd';
-import { fetchCategory } from './CategoryAction';
-import { fetchPosts, order } from '../post/PostAction';
+import { fetchCategory } from '../actions';
+import {  order } from '../../post/actions';
 import {  Link } from 'react-router-dom'
 
 
 class Category extends Component {
 
     componentDidMount() {
-        const { getCategories } =this.props
-        getCategories();
+        const { fetchCategory } =this.props
+        fetchCategory();
     }
 
     handleClick = (e) => {
         switch(e.key) {
-            case 'redux':
-            case 'udacity':
-            case 'react':
-                this.props.fetchPosts(e.key)
-                break;
             case 'vote':
             case 'time':
                 this.props.order(e.key) 
-                break;
-            case 'all':
-                this.props.fetchPosts()
                 break;
             default:
                 return e.key
@@ -51,16 +43,17 @@ class Category extends Component {
                     style={{ height: '100%', borderRight: 0 }}
                 >
                     <Menu.Item key="all">
-                        {"All Post"}
+                        <Link to="/">
+                            {"All Post"}
+                        </Link>
                     </Menu.Item>
                     <SubMenu key="sub1" title={<span><Icon type="tags-o" />Category</span>}>
                         {
                             categories.map((item) => (   
                                 <Menu.Item key={item.path} >
-                                    {/* <Link to={`/${item.name}/posts`} >
+                                    <Link to={item.name}>
                                         {item.name}
-                                        </Link> */}
-                                    {item.name}
+                                    </Link>
                                 </Menu.Item>
                             ))
                         }
@@ -89,21 +82,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        getCategories: () => {
-            dispatch(fetchCategory())
-        },
-        fetchPosts: (category) => {
-            dispatch(fetchPosts(category))
-        },
-        order: (kind) => {
-            dispatch(order(kind))
-        }
-    }
-}
-
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    { fetchCategory, order }
 )(Category);

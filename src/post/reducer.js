@@ -5,7 +5,7 @@ import {
     RECIEVE_VOTE,REQUEST_VOTE,
     RECIEVE_EDIT,REQUEST_EDIT,
     REQUEST_DELETE,RECEIVE_DELETE
-} from './PostAction';
+} from './actionTypes';
 import {
     filterItems,
     order,
@@ -13,11 +13,12 @@ import {
     deleteItems
 } from '../tool/Tool'
 
-
-export function posts(state = {
+const INITIAL_STATE = {
     isFetching: false,
     items: []
-}, action) {
+}
+
+export default function posts(state = INITIAL_STATE, action) {
     switch (action.type) {
         case REQUEST_POSTS:
         case REQUEST_POST:
@@ -48,10 +49,6 @@ export function posts(state = {
                 items: state.items.concat(action.post),
             })
         case RECIEVE_VOTE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                items: [action.post],
-            })
         case RECIEVE_EDIT:
             return Object.assign({}, state, {
                 isFetching: false,

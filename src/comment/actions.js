@@ -1,32 +1,17 @@
 import fetch from 'isomorphic-fetch'
 
-export const REQUEST_COMMENT = 'REQUEST_COMMENT'
-export const RECEIVE_COMMENT = 'RECEIVE_COMMENT'
-
-export const RECEIVE_COMMENT_VOTE = 'RECEIVE_COMMENT_VOTE'
-export const REQUEST_COMMENT_VOTE = 'REQUEST_COMMENT_VOTE'
-
-export const REQUESt_COMMENT_EDIT = 'REQUES_COMMENT_EDIT'
-export const RECEIVE_COMMNET_EDIT = 'RECEIVE_COMMNET_EDIT'
-
-export const REQUEST_COMMENT_DELETE = 'REQUEST_COMMENT_DELETE'
-export const RECEIVE_COMMENT_DELETE = 'RECEIVE_COMMENT_DELETE'
-
-export const REQUEST_COMMENT_CREAT = 'REQUEST_COMMENT_CREAT'
-export const RECEIVE_COMMNET_CREAT = 'RECEIVE_COMMNET_CREAT'
-
-export const ORDER_COMMENTS = 'ORDER_COMMENTS'
+import * as actionTypes from './actionTypes'
 
 
 function requesComment() {
     return {
-        type: REQUEST_COMMENT,
+        type: actionTypes.REQUEST_COMMENT,
     }
 }
 
 function receiveComment(json) {
     return {
-        type: RECEIVE_COMMENT,
+        type: actionTypes.RECEIVE_COMMENT,
         comments: json,
     }
 }
@@ -86,7 +71,7 @@ export function fetchComment(obj={} , id, method, req, rec) {
 
 export function order(kind) {
     return {
-        type: ORDER_COMMENTS,
+        type: actionTypes.ORDER_COMMENTS,
         kind
     }
 }

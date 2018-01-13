@@ -6,7 +6,7 @@ import {
     ORDER_COMMENTS,
     RECEIVE_COMMNET_CREAT,
     REQUEST_COMMENT_CREAT
-} from './CommentAction'
+} from './actionTypes'
 import {
     filterItems,
     deleteItems,
@@ -14,10 +14,12 @@ import {
     select
 } from '../tool/Tool'
 
-export function comments(state = {
+const INITIAL_STATE = {
     isFetching: false,
     items: []
-}, action) {
+}
+
+export default function comments( state = INITIAL_STATE, action) {
     switch (action.type) {
         case REQUEST_COMMENT:
         case REQUEST_COMMENT_VOTE:
