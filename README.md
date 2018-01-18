@@ -1,8 +1,13 @@
 # Readable
 
+有关commentCount：
+![post类](./1.png)
+![服务端的add函数](./2.png)
+
 ## Preview
 ![首页](./readable1.gif)
 ![详情页](./readable2.gif)
+
 
 ## Step by Step 
 
