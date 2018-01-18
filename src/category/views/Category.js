@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Menu, Icon } from 'antd';
 import { fetchCategory } from '../actions';
-import {  order } from '../../post/actions';
+import { actions as PostActions } from '../../post/index';
 import {  Link } from 'react-router-dom'
-
+const { order } = PostActions
 
 class Category extends Component {
 

@@ -66,7 +66,7 @@ class PostList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        posts: getVisiblePosts(state.posts.items, ownProps.match.params.category)
+        posts: getVisiblePosts(state.posts.items, ownProps.match.params.category),
     }
 }
 

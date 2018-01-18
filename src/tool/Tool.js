@@ -7,6 +7,10 @@ export function filterItems(items, c) {
     })
 }
 
+export function filterComments(items, id) {
+   return items.filter(item => item.parentId === id)
+}
+
 export function deleteItems(items, c) {
     return items.filter((item) => item.id !== c.id)
 }

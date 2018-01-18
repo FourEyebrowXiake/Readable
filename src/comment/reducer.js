@@ -32,7 +32,7 @@ export default function comments( state = INITIAL_STATE, action) {
         case RECEIVE_COMMENT:
             return Object.assign({}, state, {
                 isFetching: false,
-                items: action.comments,
+                items: state.items.concat(action.comments),
             })
         case RECEIVE_COMMENT_VOTE:
         case RECEIVE_COMMNET_EDIT:

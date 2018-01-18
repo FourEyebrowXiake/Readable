@@ -9,6 +9,8 @@ import Message from './Message'
 import PostEdit from './PostEdit'
 import Delete from './Delete'
 import { isEmpty } from '../../tool/Tool'
+import  NotFoundPage from '../../app/NotFoundPage'
+
 
 
 class Post extends Component {
@@ -25,7 +27,7 @@ class Post extends Component {
             <div>
                 {post ? (
                      <div>
-                        {isEmpty(post) ? history.push("/404") : (
+                        {isEmpty(post) ? (<NotFoundPage />) : (
                              <Layout>
                                 <Content style={{ padding: '16px 50px' }} >
                                     <Card loading={false} title={post.title}

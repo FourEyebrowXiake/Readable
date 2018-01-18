@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import { Route, Link, Redirect, Switch } from 'react-router-dom';
 import { PostList, PostCreate, Post } from '../post/index';
 import { view as Category }  from '../category/index';
-import NotFoundPage from './404'
+import NotFoundPage from './NotFoundPage'
 
 const { Header, Content, Footer } = Layout;
 

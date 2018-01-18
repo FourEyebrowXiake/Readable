@@ -9,19 +9,20 @@ import {
     REQUEST_COMMENT_DELETE
 } from '../actionTypes';
 import {
-    fetchComments,
     fetchComment,
+    fetchComments,
     order
 } from '../actions'
 import EditComment from './CommentEdit'
 import { Link } from 'react-router-dom'
 import CreateComment  from './CommentCreat'
+import { filterComments } from '../../tool/Tool'
 
 class CommentList extends Component {
 
     componentDidMount() {
-        const { fetchComments, postId } = this.props;
-        fetchComments(postId);
+        const { fetchComments, postId } = this.props
+        fetchComments(postId)
     }
 
     handleChange() {
@@ -134,11 +135,11 @@ class CommentList extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         postId: ownProps.match.params.id,
-        comments: state.comments.items
+        comments: filterComments(state.comments.items, ownProps.match.params.id)
     }
 }
 
 export default withRouter(connect(
     mapStateToProps,
-    { fetchComments, fetchComment, order }
+    { fetchComment, order, fetchComments }
 )(CommentList));

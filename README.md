@@ -1,8 +1,8 @@
 # Readable
 
 ## Preview
-![](./readable1.gif)
-![](./readable2.gif)
+![首页](./readable1.gif)
+![详情页](./readable2.gif)
 
 ## Step by Step 
 
